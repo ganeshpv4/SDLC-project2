@@ -49,5 +49,22 @@ pipeline{
                 }
             }
         }
+        stage("Push artifacts to nexus"){
+            steps{
+                script{
+                    nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
+                    classifier: '', 
+                    file: 'target/CubeGeneratorWeb.war', 
+                    type: 'war']], 
+                    credentialsId: 'nexus', 
+                    groupId: 'com.javatpoint',
+                    nexusUrl: '34.201.47.58:8081', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: 'demoapp-snapshot', 
+                    version: '1.0-SNAPSHOT'
+                }
+            }
+        }
     }
 }
