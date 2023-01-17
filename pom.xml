@@ -23,5 +23,19 @@ http://maven.apache.org/maven-v4_0_0.xsd">
   </dependencies>  
   <build>  
     <finalName>CubeGeneratorWeb</finalName>  
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.2</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>war</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
   </build>  
 </project>
