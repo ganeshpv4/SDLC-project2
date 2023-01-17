@@ -6,7 +6,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
   <groupId>com.javatpoint</groupId>  
   <artifactId>CubeGeneratorWeb</artifactId>  
   <packaging>war</packaging>  
-  <version>1.0.2-SNAPSHOT</version>  
+  <version>1.0.3-SNAPSHOT</version>  
   <name>CubeGeneratorWeb Maven Webapp</name>  
   <url>http://maven.apache.org</url> 
   <properties>
@@ -22,7 +22,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
     </dependency>  
   </dependencies>  
   <build>  
-    <finalName>CubeGeneratorWeb</finalName>  
+    <finalName>SDLC</finalName>  
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
