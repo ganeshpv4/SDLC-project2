@@ -52,6 +52,10 @@ pipeline{
         stage("Push artifacts to nexus"){
             steps{
                 script{
+
+                    def PomVersion = readMavenPom file: 'pom.xml'
+                    
+
                     nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
                     classifier: '', 
                     file: 'target/CubeGeneratorWeb.war', 
@@ -62,7 +66,7 @@ pipeline{
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
                     repository: 'demoapp-snapshot', 
-                    version: '1.0.1-SNAPSHOT'
+                    version: "${PomVersion.version}"
                 }
             }
         }
