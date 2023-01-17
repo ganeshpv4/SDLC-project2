@@ -57,7 +57,7 @@ pipeline{
 
                     nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
                     classifier: '', 
-                    file: "target/${PomVersion.finalName}.war", 
+                    file: "target/SDLC.war", 
                     type: 'war']], 
                     credentialsId: 'nexus', 
                     groupId: 'com.javatpoint',
