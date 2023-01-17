@@ -55,7 +55,6 @@ pipeline{
 
                     def PomVersion = readMavenPom file: 'pom.xml'
                     
-
                     nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
                     classifier: '', 
                     file: 'target/CubeGeneratorWeb.war', 
