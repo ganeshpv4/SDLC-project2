@@ -4,6 +4,7 @@ pipeline{
     
     environment{
         NUMBER = "${env.BUILD_ID}"
+        recipientEmails = "pvganesh4@gmail.com"
     }
     tools { 
       maven 'Maven-3.8.7' 
@@ -53,28 +54,38 @@ pipeline{
             }
         }
 
-        stage("Push artifacts to nexus"){
-            steps{
-                script{
-
-                    def PomVersion = readMavenPom file: 'pom.xml'
-                    def NexusRepo = PomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp-release" 
-
-                    nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
-                    classifier: '', 
-                    file: "target/SDLC-both.war", 
-                    type: 'war']], 
-                    
-                    credentialsId: 'nexus', 
-                    groupId: 'com.javatpoint',
-                    nexusUrl: '34.201.5.4:8081', 
-                    nexusVersion: 'nexus3', 
-                    protocol: 'http', 
-                    repository: "${NexusRepo}", 
-                    version: "${PomVersion.version}"
-                }
+        post{
+            always{
+                emailext to: "${recipientEmails}",
+                subject: "Sonar success",
+                body: "Sonarqube analysis and Quality gate analysis: OK"
+                attachLog: true
             }
         }
+
+
+//        stage("Push artifacts to nexus"){
+//            steps{
+//                script{
+//
+//                    def PomVersion = readMavenPom file: 'pom.xml'
+//                    def NexusRepo = PomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp-release" 
+//
+//                    nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
+//                    classifier: '', 
+//                    file: "target/SDLC-both.war", 
+//                    type: 'war']], 
+                    
+//                    credentialsId: 'nexus', 
+//                    groupId: 'com.javatpoint',
+//                    nexusUrl: '34.201.5.4:8081', 
+//                    nexusVersion: 'nexus3', 
+//                    protocol: 'http', 
+//                    repository: "${NexusRepo}", 
+//                    version: "${PomVersion.version}"
+//                }
+//            }
+//        }
 
         stage("Push to S3 bucket"){
             steps{
