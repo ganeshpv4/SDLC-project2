@@ -54,17 +54,19 @@ pipeline{
                 script{
 
                     def PomVersion = readMavenPom file: 'pom.xml'
+                    def NexusRepo = PomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp-release" 
 
                     nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
                     classifier: '', 
-                    file: "target/SDLC.war", 
+                    file: "target/SDLC-1.war", 
                     type: 'war']], 
+                    
                     credentialsId: 'nexus', 
                     groupId: 'com.javatpoint',
-                    nexusUrl: '34.201.47.58:8081', 
+                    nexusUrl: '34.201.5.4:8081', 
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
-                    repository: 'demoapp-snapshot', 
+                    repository: "${NexusRepo}", 
                     version: "${PomVersion.version}"
                 }
             }
