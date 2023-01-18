@@ -53,17 +53,6 @@ pipeline{
                 }
             }
         }
-
-    post{
-        always{
-            emailext to: "${recipientEmails}",
-            subject: "Sonar success",
-            body: "Sonarqube analysis and Quality gate analysis: OK"
-            attachLog: true
-        }
-    }
-
-
 //        stage("Push artifacts to nexus"){
 //            steps{
 //                script{
@@ -115,5 +104,13 @@ pipeline{
             }
         }
 
+    }
+     post{
+        always{
+            emailext to: "${recipientEmails}",
+            subject: "Sonar success",
+            body: "Sonarqube analysis and Quality gate analysis: OK"
+            attachLog: true
+        }
     }
 }
