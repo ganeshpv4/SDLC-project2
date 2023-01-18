@@ -53,6 +53,7 @@ pipeline{
                 }
             }
         }
+
 //        stage("Push artifacts to nexus"){
 //            steps{
 //                script{
@@ -103,13 +104,33 @@ pipeline{
                 }
             }
         }
+        stage("Build docker image"){
+            steps{
+                script{
 
-    }
-     post{
-        always{
-            emailext to: "${recipientEmails}",
-            subject: "Jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
-            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
+                    sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ganeshpv/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ganeshpv/$JOB_NAME:latest'
+
+                }
+            }                    
         }
     }
+
+
+
+
+
+
+
+
+
+
+//     post{
+//        always{
+//            emailext to: "${recipientEmails}",
+//            subject: "Jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+//            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
+//        }
+//    }
 }
