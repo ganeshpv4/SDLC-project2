@@ -53,29 +53,30 @@ pipeline{
             }
         }
 
-  //      stage("Push artifacts to nexus"){
-  //          steps{
-  //              script{
-//
-  //                  def PomVersion = readMavenPom file: 'pom.xml'
-  //                  def NexusRepo = PomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp-release" 
-//
-  //                  nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
-    //                classifier: '', 
-//                    file: "target/SDLC-2.war", 
-//                    type: 'war']], 
-//                    
-//                    credentialsId: 'nexus', 
-//                    groupId: 'com.javatpoint',
-//                    nexusUrl: '34.201.5.4:8081', 
-//                    nexusVersion: 'nexus3', 
-//                    protocol: 'http', 
-//                    repository: "${NexusRepo}", 
-//                    version: "${PomVersion.version}"
-//                }
-//            }
-//        }
-           stage("Push to S3 bucket"){
+        stage("Push artifacts to nexus"){
+            steps{
+                script{
+
+                    def PomVersion = readMavenPom file: 'pom.xml'
+                    def NexusRepo = PomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp-release" 
+
+                    nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
+                    classifier: '', 
+                    file: "target/SDLC-both.war", 
+                    type: 'war']], 
+                    
+                    credentialsId: 'nexus', 
+                    groupId: 'com.javatpoint',
+                    nexusUrl: '34.201.5.4:8081', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: "${NexusRepo}", 
+                    version: "${PomVersion.version}"
+                }
+            }
+        }
+
+        stage("Push to S3 bucket"){
             steps{
                 script{
 
@@ -91,7 +92,7 @@ pipeline{
                     noUploadOnFailure: true, 
                     selectedRegion: 'us-east-1', 
                     showDirectlyInBrowser: false, 
-                    sourceFile: 'target/SDLC-S3-check.war', 
+                    sourceFile: 'target/SDLC-both.war', 
                     storageClass: 'STANDARD', 
                     uploadFromSlave: false, 
                     useServerSideEncryption: false]], 

@@ -22,7 +22,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
     </dependency>  
   </dependencies>  
   <build>  
-    <finalName>SDLC-S3-check</finalName>  
+    <finalName>SDLC-both</finalName>  
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
