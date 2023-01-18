@@ -2,6 +2,9 @@ pipeline{
 
     agent any
     
+    environment{
+        NUMBER = "${env.BUILD_ID}"
+    }
     tools { 
       maven 'Maven-3.8.7' 
       jdk 'Java-11' 
@@ -49,27 +52,56 @@ pipeline{
                 }
             }
         }
-        stage("Push artifacts to nexus"){
+
+  //      stage("Push artifacts to nexus"){
+  //          steps{
+  //              script{
+//
+  //                  def PomVersion = readMavenPom file: 'pom.xml'
+  //                  def NexusRepo = PomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp-release" 
+//
+  //                  nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
+    //                classifier: '', 
+//                    file: "target/SDLC-2.war", 
+//                    type: 'war']], 
+//                    
+//                    credentialsId: 'nexus', 
+//                    groupId: 'com.javatpoint',
+//                    nexusUrl: '34.201.5.4:8081', 
+//                    nexusVersion: 'nexus3', 
+//                    protocol: 'http', 
+//                    repository: "${NexusRepo}", 
+//                    version: "${PomVersion.version}"
+//                }
+//            }
+//        }
+           stage("Push to S3 bucket"){
             steps{
                 script{
 
-                    def PomVersion = readMavenPom file: 'pom.xml'
-                    def NexusRepo = PomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp-release" 
-
-                    nexusArtifactUploader artifacts: [[artifactId: 'CubeGeneratorWeb', 
-                    classifier: '', 
-                    file: "target/SDLC-2.war", 
-                    type: 'war']], 
-                    
-                    credentialsId: 'nexus', 
-                    groupId: 'com.javatpoint',
-                    nexusUrl: '34.201.5.4:8081', 
-                    nexusVersion: 'nexus3', 
-                    protocol: 'http', 
-                    repository: "${NexusRepo}", 
-                    version: "${PomVersion.version}"
+                    s3Upload consoleLogLevel: 'INFO', 
+                    dontSetBuildResultOnFailure: false, 
+                    dontWaitForConcurrentBuildCompletion: false, 
+                    entries: [[bucket: 'artifact-from-jenkinsfile', 
+                    excludedFile: '', 
+                    flatten: false, 
+                    gzipFiles: false, 
+                    keepForever: false, 
+                    managedArtifacts: false, 
+                    noUploadOnFailure: true, 
+                    selectedRegion: 'us-east-1', 
+                    showDirectlyInBrowser: false, 
+                    sourceFile: 'target/SDLC-2.war', 
+                    storageClass: 'STANDARD', 
+                    uploadFromSlave: false, 
+                    useServerSideEncryption: false]], 
+                    pluginFailureResultConstraint: 'FAILURE', 
+                    profileName: 'AWS_S3', 
+                    userMetadata: []
+                
                 }
             }
         }
+
     }
 }
