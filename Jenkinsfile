@@ -91,7 +91,7 @@ pipeline{
                     noUploadOnFailure: true, 
                     selectedRegion: 'us-east-1', 
                     showDirectlyInBrowser: false, 
-                    sourceFile: 'target/SDLC-S3.war', 
+                    sourceFile: 'target/SDLC-S3-check.war', 
                     storageClass: 'STANDARD', 
                     uploadFromSlave: false, 
                     useServerSideEncryption: false]], 
