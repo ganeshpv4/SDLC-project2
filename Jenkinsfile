@@ -106,10 +106,10 @@ pipeline{
 
     }
      post{
-        always{
+        changed{
             emailext to: "${recipientEmails}",
-            subject: "Sonar success",
-            body: "Sonarqube analysis and Quality gate analysis: OK"
+            subject: "Jenkins build: ${currentBuild.currentResult}: ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
         }
     }
 }
