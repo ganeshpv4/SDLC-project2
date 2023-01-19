@@ -108,13 +108,13 @@ pipeline{
             steps{
                 script{
 
-                    withCredentials([usernameColonPassword(credentialsId: 'dockerhub', variable: 'docker_cred')]) {
+                    withCredentials([string(credentialsId: 'docker_pd', variable: 'docker_cred')]) {
 
                         sh '''
-                         docker build -t "cube/${NUMBER}" .
-                         docker login -u ganeshpv -p $docker_cred
-                         docker push cube/${NUMBER}
-                         docker rmi cube/${NUMBER}
+                         docker build -t "ganeshpv/cube-${NUMBER}" .
+                         docker login -u ganeshpv -p ${docker_cred}
+                         docker push ganeshpv/cube-${NUMBER}
+                         docker rmi ganeshpv/cube-${NUMBER}
                         '''
                     }
                 }
