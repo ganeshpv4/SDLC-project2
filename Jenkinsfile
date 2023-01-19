@@ -104,17 +104,20 @@ pipeline{
                 }
             }
         }
-        stage("Build docker image and push to Dockerhub"){
+        stage("Build docker image, tag and push to Dockerhub"){
             steps{
                 script{
 
                     withCredentials([string(credentialsId: 'docker_pd', variable: 'docker_cred')]) {
 
                         sh '''
-                         docker build -t "ganeshpv/cube-${NUMBER}" .
+                         docker build -t "cube-${NUMBER}" .
+                         docker tag cube-${NUMBER} ganeshpv/cube-generator:v1.${NUMBER}
+                         docker tag cube-${NUMBER} ganeshpv/cube-generator:${NUMBER}
                          docker login -u ganeshpv -p ${docker_cred}
-                         docker push ganeshpv/cube-${NUMBER}
-                         docker rmi ganeshpv/cube-${NUMBER}
+                         docker push ganeshpv/cube-generator:v1.${NUMBER}
+                         docker push ganeshpv/cube-generator:${NUMBER}
+                         docker rmi -f $(docker images)
                         '''
                     }
                 }
