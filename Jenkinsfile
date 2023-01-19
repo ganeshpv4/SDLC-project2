@@ -111,10 +111,10 @@ pipeline{
                     withCredentials([usernameColonPassword(credentialsId: 'dockerhub', variable: 'docker_cred')]) {
 
                         sh '''
-                         docker build -t "Cube/${NUMBER}" .
+                         docker build -t "cube/${NUMBER}" .
                          docker login -u ganeshpv -p $docker_cred
-                         docker push Cube/${NUMBER}
-                         docker rmi Cube/${NUMBER}
+                         docker push cube/${NUMBER}
+                         docker rmi cube/${NUMBER}
                         '''
                     }
                 }
