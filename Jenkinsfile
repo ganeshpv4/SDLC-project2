@@ -117,7 +117,8 @@ pipeline{
                          docker login -u ganeshpv -p ${docker_cred}
                          docker push ganeshpv/cube-generator:v1.${NUMBER}
                          docker push ganeshpv/cube-generator:${NUMBER}
-                         docker rmi -f $(docker images)
+                         docker rmi openjdk:11.0
+                         docker rmi maven
                         '''
                     }
                 }
