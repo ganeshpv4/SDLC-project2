@@ -36,23 +36,23 @@ pipeline{
                 sh 'mvn clean install'
             }
         }
-        stage("Sonarqube analysis"){
-            steps{
-                script{
-                    withSonarQubeEnv(credentialsId: 'sonar-key'){
-                        sh 'mvn clean package sonar:sonar'
-                   }
-                }
-            }
-        }
-        stage("Quality gate analysis"){
-            steps{
-                script{
-                    waitForQualityGate abortPipeline: false, 
-                    credentialsId: 'sonar-key'
-                }
-            }
-        }
+//      stage("Sonarqube analysis"){
+//            steps{
+//                script{
+//                    withSonarQubeEnv(credentialsId: 'sonar-key'){
+//                        sh 'mvn clean package sonar:sonar'
+ //                  }
+ //               }
+ //           }
+ //       }
+//        stage("Quality gate analysis"){
+//            steps{
+//                script{
+//                    waitForQualityGate abortPipeline: false, 
+//                    credentialsId: 'sonar-key'
+//                }
+//            }
+//        }
 
 //        stage("Push artifacts to nexus"){
 //            steps{
@@ -104,14 +104,19 @@ pipeline{
                 }
             }
         }
-        stage("Build docker image"){
+        stage("Build docker image and push to Dockerhub"){
             steps{
                 script{
 
-                    sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ganeshpv/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ganeshpv/$JOB_NAME:latest'
+                    withCredentials([usernameColonPassword(credentialsId: 'dockerhub', variable: 'docker_cred')]) {
 
+                        sh '''
+                         docker build -t "Cube/${NUMBER}" .
+                         docker login -u ganeshpv -p $docker_cred
+                         docker push Cube/${NUMBER}
+                         docker rmi Cube/${NUMBER}
+                        '''
+                    }
                 }
             }                    
         }
