@@ -124,7 +124,7 @@ pipeline{
                         sh 'docker login -u ganeshpv -p ${docker_cred}'
                         sh 'docker push ganeshpv/cube-generator:v1.${NUMBER}'
                     }
-                    withCredentials([string(credentialsId: 'nexus_pass', variable: 'nexus_pass')]){
+                    withCredentials([string(credentialsId: 'nexus_pd', variable: 'nexus_pass')]){
                         sh 'docker login -u admin -p ${nexus_pass}'
                         sh 'docker push ganeshpv/cube-generator:v1.${NUMBER}'
                     }
