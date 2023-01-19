@@ -124,16 +124,18 @@ pipeline{
                         docker login -u ganeshpv -p ${docker_cred}
                         docker push ganeshpv/cube-generator:v1.${NUMBER}
                     }
+                    
                     withCredentials([string(credentialsId: 'nexus_pass', variable: 'nexus_pass')]){
                         docker login -u admin -p ${nexus_pass}
                         docker push ganeshpv/cube-generator:v1.${NUMBER}
                     }
-
                 }
+
             }
         }
     }
 }
+
 
 
 
