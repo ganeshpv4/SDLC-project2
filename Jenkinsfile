@@ -104,23 +104,38 @@ pipeline{
                 }
             }
         }
-        stage("Build docker image, tag and push to Dockerhub"){
+        stage("Build docker image and tag and push"){
+            steps{
+                script{
+                        sh '''
+                         docker build -t "cube-${NUMBER}" .
+                         docker tag cube-${NUMBER} ganeshpv/cube-generator:v1.${NUMBER}                  
+                         
+                        '''
+                }
+            }
+        }
+
+        stage("Push image to Dockerhub and nexus"){
             steps{
                 script{
 
                     withCredentials([string(credentialsId: 'docker_pd', variable: 'docker_cred')]) {
 
-                        sh '''
-                         docker build -t "cube-${NUMBER}" .
-                         docker tag cube-${NUMBER} ganeshpv/cube-generator:v1.${NUMBER}                  
-                         docker login -u ganeshpv -p ${docker_cred}
-                         docker push ganeshpv/cube-generator:v1.${NUMBER}
-                        '''
+                        docker login -u ganeshpv -p ${docker_cred}
+                        docker push ganeshpv/cube-generator:v1.${NUMBER}
                     }
+                    withCredentials([string(credentialsId: 'nexus_pass', variable: 'nexus_pass')]) {
+
+                        docker login -u admin -p ${nexus_pass}
+                        docker push ganeshpv/cube-generator:v1.${NUMBER}
+                    }
+                    
                 }
-            }                    
+            }
         }
     }
+}
 
 
 
@@ -138,4 +153,4 @@ pipeline{
 //            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
 //        }
 //    }
-}
+
