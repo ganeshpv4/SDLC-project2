@@ -5,6 +5,6 @@ RUN mvn install
 
 FROM openjdk:11.0
 WORKDIR /app
-COPY --from=build /app/target/SDLC-check.war .
+COPY --from=build /app/target/SDLC-check.jar .
 EXPOSE 8090
-CMD ["java","-jar","SDLC-check.war"]
+CMD ["java","-jar","SDLC-check.jar"]
