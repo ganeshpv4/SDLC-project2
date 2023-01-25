@@ -120,8 +120,8 @@ pipeline{
             steps{
                 script{
 
-                    withCredentials([string(credentialsId: 'docker_pd', variable: 'docker_cred')]){
-                        sh 'docker login -u ganeshpv -p ${docker_cred}'
+                    withCredentials([string(credentialsId: 'docker_pd', variable: 'docker_pass')]){
+                        sh 'docker login -u ganeshpv -p ${docker_pass}'
                         sh 'docker push ganeshpv/cube-generator:v1.${NUMBER}'
                     }
 //                    withCredentials([string(credentialsId: 'nexus_pd', variable: 'nexus_pass')]){
