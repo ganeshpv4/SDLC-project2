@@ -93,12 +93,12 @@ pipeline{
                     noUploadOnFailure: true, 
                     selectedRegion: 'us-east-1', 
                     showDirectlyInBrowser: false, 
-                    sourceFile: 'target/SDLC-both.war', 
+                    sourceFile: 'target/SDLC-check.war', 
                     storageClass: 'STANDARD', 
                     uploadFromSlave: false, 
                     useServerSideEncryption: false]], 
                     pluginFailureResultConstraint: 'FAILURE', 
-                    profileName: 'AWS_S3', 
+                    profileName: 'AWS-S3', 
                     userMetadata: []
                 
                 }
