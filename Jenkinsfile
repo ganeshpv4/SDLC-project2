@@ -26,33 +26,33 @@ pipeline{
                 sh 'mvn test'
             }
         }
-//        stage("Integration test"){
-//            steps{
-//                sh 'mvn verify -DskipUnitTest'
-//            }
-//        }
+        stage("Integration test"){
+            steps{
+                sh 'mvn verify -DskipUnitTest'
+            }
+        }
         stage("Maven build"){
             steps{
                 sh 'mvn clean install'
             }
         }
-        stage("Sonarqube analysis"){
-            steps{
-                script{
-                    withSonarQubeEnv(credentialsId: 'sonar-pd'){
-                        sh 'mvn clean package sonar:sonar'
-                   }
-                }
-            }
-        }
-        stage("Quality gate analysis"){
-            steps{
-                script{
-                    waitForQualityGate abortPipeline: false, 
-                    credentialsId: 'sonar-pd'
-                }
-            }
-        }
+//        stage("Sonarqube analysis"){
+//            steps{
+//                script{
+//                    withSonarQubeEnv(credentialsId: 'sonar-pd'){
+//                        sh 'mvn clean package sonar:sonar'
+//                   }
+//                }
+//            }
+//        }
+//        stage("Quality gate analysis"){
+//            steps{
+//                script{
+//                    waitForQualityGate abortPipeline: false, 
+//                    credentialsId: 'sonar-pd'
+//                }
+//            }
+//        }
 
 //        stage("Push artifacts to nexus"){
 //            steps{
@@ -93,7 +93,7 @@ pipeline{
                     noUploadOnFailure: true, 
                     selectedRegion: 'us-east-1', 
                     showDirectlyInBrowser: false, 
-                    sourceFile: 'target/SDLC-check.war', 
+                    sourceFile: 'target/SDLC-check.jar', 
                     storageClass: 'STANDARD', 
                     uploadFromSlave: false, 
                     useServerSideEncryption: false]], 
