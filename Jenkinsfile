@@ -26,33 +26,33 @@ pipeline{
                 sh 'mvn test'
             }
         }
-        stage("Integration test"){
-            steps{
-                sh 'mvn verify -DskipUnitTest'
-            }
-        }
+//        stage("Integration test"){
+//            steps{
+//                sh 'mvn verify -DskipUnitTest'
+//            }
+//        }
         stage("Maven build"){
             steps{
                 sh 'mvn clean install'
             }
         }
- //       stage("Sonarqube analysis"){
-//            steps{
-//                script{
-//                    withSonarQubeEnv(credentialsId: 'sonar-key'){
-//                        sh 'mvn clean package sonar:sonar'
-//                   }
-//                }
-//            }
-//        }
-//        stage("Quality gate analysis"){
-//            steps{
-//                script{
-//                    waitForQualityGate abortPipeline: false, 
-//                    credentialsId: 'sonar-key'
-//                }
-//            }
-//        }
+        stage("Sonarqube analysis"){
+            steps{
+                script{
+                    withSonarQubeEnv(credentialsId: 'sonar-pd'){
+                        sh 'mvn clean package sonar:sonar'
+                   }
+                }
+            }
+        }
+        stage("Quality gate analysis"){
+            steps{
+                script{
+                    waitForQualityGate abortPipeline: false, 
+                    credentialsId: 'sonar-pd'
+                }
+            }
+        }
 
 //        stage("Push artifacts to nexus"){
 //            steps{
